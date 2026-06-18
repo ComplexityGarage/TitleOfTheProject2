@@ -1,0 +1,31 @@
+Register CRSFRcModule in setupModules()
+
+Adds the module header include and constructs the module last in
+setupModules() (it must be created after RoutingModule). Apply against an
+upstream Meshtastic firmware checkout with:
+
+    git apply -p1 patches/0001-register-CRSFRcModule.patch
+    #  or:  patch -p1 < patches/0001-register-CRSFRcModule.patch
+
+Line numbers are approximate — git apply tolerates small offsets. If the
+context has drifted on your upstream version, use ./install.sh instead, which
+inserts the two lines programmatically (version-robust).
+
+diff --git a/src/modules/Modules.cpp b/src/modules/Modules.cpp
+--- a/src/modules/Modules.cpp
++++ b/src/modules/Modules.cpp
+@@ -107,5 +107,7 @@
+ #include "modules/StatusMessageModule.h"
+ #endif
+
++#include "modules/CRSFRcModule.h"
++
+ #if defined(HAS_HARDWARE_WATCHDOG)
+ #include "watchdog/watchdogThread.h"
+@@ -273,4 +275,6 @@
+     // NOTE! This module must be added LAST because it likes to check for replies from other modules and avoid sending extra
+     // acks
+     routingModule = new RoutingModule();
++
++    new CRSFRcModule();
+ }
